@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { getNotificationsRoute } from '../utils/ApiRoutes';
+import { getAdRoute, getNotificationsRoute } from '../utils/ApiRoutes';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 export default function Notifications() {
 
@@ -17,7 +18,7 @@ export default function Notifications() {
           withCredentials: true,
         };
         const res = await axios.get(getNotificationsRoute, config);
-        const data = res.data;
+        const data = res.data;        
         setNotifications(data);
       } catch (error) {
         console.log(error);
@@ -26,6 +27,21 @@ export default function Notifications() {
     }
     getNotifications();
   }, [])
+
+   const handleClick = async (adId) => {
+    console.log(adId);
+    try {
+      const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      };
+      const res = await axios.get(`${getAdRoute}/${id}`, config);
+    } catch (error) {
+      console.log(error);
+    }
+   }
 
 
     return (
@@ -37,9 +53,11 @@ export default function Notifications() {
               {
                 notifications?.length ? (
                   notifications.map((notfication, index) => (
-                    <div key={index} className=' flex items-center py-2 gap-2 border-y-2 border-y-black dark:border-y-white cursor-pointer'>
-                      <p className=' py-2 text-lg font-bold'>{notfication.message}</p>
-                    </div>
+                    <Link to={`/post/${notfication.adId._id}`}>
+                      <div key={index} className=' flex items-center py-2 gap-2 border-y-2 border-y-black dark:border-y-white cursor-pointer'>
+                        <p className=' py-2 text-lg font-bold'>{notfication.message}</p>
+                      </div>
+                    </Link>
                   ))
                 ):(
                   <p>No Notification to show!</p>

@@ -17,11 +17,11 @@ const adSchema = new mongoose.Schema({
         required: true,
     },
     booked: {
-        type: Boolean,
-        default: false,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
     },
     interested: [{
-        type: String,  // Storing id as string
+        type: String,
     }],
 },{ timestamps: true }
 );
@@ -29,9 +29,9 @@ const adSchema = new mongoose.Schema({
 adSchema.methods.toggleInterest = async function(id) {
     const index = this.interested.indexOf(id);
     if (index === -1) {
-        this.interested.push(id);  // Add interest
+        this.interested.push(id);
     } else {
-        this.interested.splice(index, 1);  // Remove interest
+        this.interested.splice(index, 1);
     }
     await this.save();
 } 

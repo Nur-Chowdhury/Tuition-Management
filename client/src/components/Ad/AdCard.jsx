@@ -17,7 +17,7 @@ export default function AdCard({ad}) {
 
     const [pst, setPst] = useState(ad);
 
-    const [interested, setInterested] = useState(pst.interested.length);
+    const [interested, setInterested] = useState(pst.interested?.length | 0);
 
     const handleInterested = async () => {
         try {
@@ -36,6 +36,7 @@ export default function AdCard({ad}) {
         }
     }
 
+    console.log(pst);
 
     useEffect(() => { 
         if(!postedBy){
@@ -54,8 +55,12 @@ export default function AdCard({ad}) {
         }
     }, [id]);
 
+    console.log(pst);
+
     return (
-        <div className='mb-2 bg-gray-200 dark:bg-gray-900 p-4 rounded-xl'>
+        <div className=' min-w-[320px] mb-2 bg-gray-200 dark:bg-gray-900 p-4 rounded-xl cursor-pointer'
+            onClick={() => window.location.href = `/post/${pst._id}`}
+        >
             <div className='flex gap-3 items-center mb-2'>
                 <Link to={"/profile/"+ pst?.userId}>
                     <img
@@ -80,6 +85,17 @@ export default function AdCard({ad}) {
             </div>
 
             {/* post body */}
+
+            <div className=' flex flex-wrap gap-2 my-2'>
+                {pst?.topics && (
+                    pst.topics.map((topic, index) => {
+                        return <div className=' px-1 py-[2px] bg-blue-500 rounded text-sm text-white font-medium' key={index}>
+                            {topic}
+                        </div>
+                    })
+                )}
+            </div>
+
             <div>
                 <p className='text-ascent-2'>
                     {showAll === pst?._id
@@ -115,40 +131,30 @@ export default function AdCard({ad}) {
                 
                 {pst?.interested?.includes(currentUser?._id) ? (
                         <button
-                            className='flex items-center justify-center text-base gap-1 border border-blue-500 px-2 py-1 rounded-lg'
-                            onClick={handleInterested}
+                            className={`flex items-center justify-center text-base gap-1 border border-blue-500 px-2 py-1 rounded-lg ${pst.booked ? ' cursor-not-allowed opacity-40': ''}`}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleInterested();
+                            }}
+                            disabled = {pst.booked}
                         >
                             <BiSolidStar size={30} className=' text-green-600' />
                             <span>Uninterested</span>
                         </button>
                     ) : (
                         <button
-                            className='flex items-center justify-center text-base gap-1 border border-blue-500 px-2 py-1 rounded-lg'
-                            onClick={handleInterested}
+                            className={`flex items-center justify-center text-base gap-1 border border-blue-500 px-2 py-1 rounded-lg ${(currentUser._id === pst?.userId || pst.booked) ? ' cursor-not-allowed opacity-40': ''}`}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleInterested();
+                            }}
+                            disabled = {currentUser._id === pst?.userId || pst.booked}
                         >
                             <CiStar size={35} className=' text-green-600 font-medium' />
                             <span>Interested</span>
                         </button>
                 )}
             </div>
-
-            {/* all comments */}
-            {/* {showComments === pst?._id && (
-                <div className='w-full mt-4 border-t border-[#66666645] pt-4 '>
-                    <CommentForm id={pst._id} userId={currentUser.studentID}/>
-                    { loading ? (
-                        <h1>Loading...</h1>
-                    ) : comments?.length > 0 ? (
-                        comments?.map((comment) => (
-                            <CommentCard key={comment?._id} comment = {comment}/>
-                        ))
-                    ) : (
-                        <span className='flex text-sm py-4 text-ascent-2 text-center'>
-                            No Comments, be first to comment
-                        </span>
-                    )}
-                </div>
-            )} */}
         </div>
     )
 }

@@ -45,6 +45,18 @@ const userSchema = new mongoose.Schema({
   profile: {
       type: String,
   },
+  ratings: [{
+      userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+      },
+      rating: {
+        type: Number,
+        default: 0,
+        max: 5,
+      },
+  }]
 }, {timestamps: true});
 
 const User = mongoose.model('User', userSchema);
