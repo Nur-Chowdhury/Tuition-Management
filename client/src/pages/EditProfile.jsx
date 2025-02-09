@@ -53,7 +53,6 @@ export default function EditProfile() {
     }, [imageFile]);
 
     useEffect(() => {
-        console.log(currentUser);
         if (currentUser && currentUser.interestedTopics) {
             const updatedTopics = initialTopics.filter(
                 (topic) => !currentUser.interestedTopics.includes(topic.subName)
@@ -337,7 +336,6 @@ export default function EditProfile() {
                                     formData?.selectedTopics?.length >= 5 ? 'opacity-50 cursor-not-allowed' : ''
                                 }`}
                                 onChange={(e) => {
-                                    console.log(e.target.value)
                                     const selectedTopic = topics.find(
                                         (t) => t.subName === e.target.value
                                     );

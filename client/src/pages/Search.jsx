@@ -10,6 +10,7 @@ import AdCard from '../components/Ad/AdCard';
 export default function Search() {
 
     const navigate = useNavigate();
+    const [urlParams, setUrlParams] = useState({});
     const [sidebardata, setSidebardata] = useState({
         searchTerm: '',
         type: 'tutor',
@@ -17,7 +18,6 @@ export default function Search() {
         sort: 'createdAt',
         order: 'desc',
     });
-
     const [loading, setLoading] = useState(false);
     const [listings, setListings] = useState([]);
     const [showMore, setShowMore] = useState(false);
@@ -25,48 +25,37 @@ export default function Search() {
     const [lt, setLt] = useState(false);
 
     useEffect(() => {
-        const urlParams = new URLSearchParams(location.search);
-        const searchTermFromUrl = urlParams.get('searchTerm');
-        const typeFromUrl = urlParams.get('type');
-        const subTypeFromUrl = urlParams.get('subType');
-        const sortFromUrl = urlParams.get('sort');
-        const orderFromUrl = urlParams.get('order');
-    
-        if (
-            searchTermFromUrl ||
-            typeFromUrl ||
-            subTypeFromUrl||
-            sortFromUrl ||
-            orderFromUrl
-        ) {
-            setSidebardata({
-                searchTerm: searchTermFromUrl || '',
-                type: typeFromUrl || 'tutor',
-                subType: subTypeFromUrl || 'name',
-                sort: sortFromUrl || 'createdAt',
-                order: orderFromUrl || 'desc',
-            });
-            setLt(sidebardata.type === 'post');
-        }
+        const params = new URLSearchParams(location.search);
+        setUrlParams({
+            searchTerm: params.get('searchTerm') || '',
+            type: params.get('type') || 'tutor',
+            subType: params.get('subType') || 'name',
+            sort: params.get('sort') || 'createdAt',
+            order: params.get('order') || 'desc',
+        });
+    }, [location.search]);
 
+    useEffect(() => {
+        setSidebardata(urlParams);
+        setLt(urlParams.type === 'post');
+    }, [urlParams]);
+
+    useEffect(() => {
         const fetchListings = async () => {
             setLoading(true);
             setShowMore(false);
             const searchQuery = new URLSearchParams(sidebardata).toString();
             const res = await fetch(`${searchRoute}?${searchQuery}`);
             const data = await res.json();
-            console.log(data);
-            if (data.length > range) {
-                setShowMore(true);
-            } else {
-                setShowMore(false);
-            }
+            setShowMore(data.length > range);
             setListings(data);
             setLoading(false);
         };
-    
-        fetchListings();
-    }, [location.search]);
+
+        if (Object.keys(sidebardata).length > 0) {
+            fetchListings();
+        }
+    }, [sidebardata]);
 
     const handleChange = (e) => {
         if (
@@ -84,16 +73,14 @@ export default function Search() {
         ) {
             setSidebardata({ ...sidebardata, subType: e.target.id });
         }
-    
+
         if (e.target.id === 'searchTerm') {
             setSidebardata({ ...sidebardata, searchTerm: e.target.value });
         }
-    
+
         if (e.target.id === 'sort_order') {
             const sort = e.target.value.split('_')[0] || 'createdAt';
-        
             const order = e.target.value.split('_')[1] || 'desc';
-        
             setSidebardata({ ...sidebardata, sort, order });
         }
     };
@@ -111,14 +98,12 @@ export default function Search() {
     };
 
     const onShowMoreClick = async () => {
-        setRange(range+10);
+        setRange(range + 10);
         if (listings.length < range) {
             setShowMore(false);
         }
-    };
-
-    console.log(sidebardata.type)
-
+    }
+    
     return (
         <div>
             <Navbar />

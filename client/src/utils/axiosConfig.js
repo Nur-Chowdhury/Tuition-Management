@@ -12,11 +12,11 @@ axios.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       // Token expired or unauthorized
       toast.error('Session expired. Please log in again.');
-      localStorage.removeItem('currentUser'); // Remove user ID from local storage
+      localStorage.removeItem('userID'); // Remove user ID from local storage
       // Dispatch logout action
       store.dispatch(logout());
       // Redirect to login page
-      window.location.href = '/login'; 
+      window.location.href = '/'; 
     }
     return Promise.reject(error);
   }

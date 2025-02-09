@@ -9,6 +9,7 @@ export const createAdRoute = `${host}/api/ad/createAd`;
 export const getAdsRoute = `${host}/api/ad/getAds`;
 export const adRoute = `${host}/api/ad`;
 export const getAdRoute = `${host}/api/ad/getAd`;
+export const getUserAdsRoute = `${host}/api/ad/getUserAds`;
 
 
 

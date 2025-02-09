@@ -1,15 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import {Link} from 'react-router-dom'
-import profile from "../../assets/userprofile.png";
+import profile from "../assets/userprofile.png";
 import moment from "moment";
 import { useSelector } from 'react-redux';
 import { BiSolidStar } from "react-icons/bi";
-import { adRoute, findUserByIdRoute } from '../../utils/ApiRoutes';
+import { adRoute, findUserByIdRoute } from '../utils/ApiRoutes';
 import axios from 'axios';
 import { CiStar } from "react-icons/ci";
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 
-export default function AdCard({ad}) {
+export default function AdCardProfile({ad}) {
     const [showAll, setShowAll] = useState(0);
     const [postedBy, setpostedBy] = useState(null);
     const {currentUser} = useSelector((state) => state.user);
@@ -55,7 +55,7 @@ export default function AdCard({ad}) {
     }, [id]);
 
     return (
-        <div className=' min-w-[320px] mb-2 bg-gray-200 dark:bg-gray-900 p-4 rounded-xl cursor-pointer'
+        <div className=' w-[320px] md:w-[500px] xl:w-[600px] mb-8 bg-gray-200 dark:bg-gray-900 p-4 rounded-xl cursor-pointer'
             onClick={() => window.location.href = `/post/${pst._id}`}
         >
             <div className='flex gap-3 items-center mb-2'>

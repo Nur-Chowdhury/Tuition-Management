@@ -110,3 +110,12 @@ export const bookUser = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const getAdsByUser = async (req, res) => {
+    try {
+        const ads = await Ad.find({ userId: req.params.userId });
+        res.status(200).json(ads);
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};

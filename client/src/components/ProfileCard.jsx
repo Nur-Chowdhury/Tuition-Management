@@ -14,7 +14,7 @@ export default function ProfileCard() {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        dispatch(logout(navigate));
+        dispatch(logout(navigate('/')));
     }
 
 
@@ -34,7 +34,7 @@ export default function ProfileCard() {
                     <span className='text-sm opacity-70 mt-0 pt-0'>
                         {currentUser?.userType}
                     </span>
-                    <Link to={"/profile/"} className="w-full">
+                    <Link to={`/profile/${currentUser._id}`} className="w-full">
                         <div className='my-2 p-2 px-6 w-full bg-blue-600 hover:bg-blue-700 transition-all duration-500 transform hover:scale-105 
                         rounded-lg flex justify-center text-white text-lg font-semibold'>
                             My Profile

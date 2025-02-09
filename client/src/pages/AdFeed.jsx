@@ -7,15 +7,6 @@ import Notifications from '../components/Notifications';
 export default function AdFeed() {
     const {currentUser} = useSelector((state) => state.user);
 
-//   const handleClick = async (id) => {
-//     console.log(id);
-//     const res = await fetch(`${findUserByIdRoute}/${id}`);
-//     const data = await res.json();
-//     if(data){
-//       dispatch(setReceiver(data));
-//     }
-//   }
-
 
   return (  
     <div className='w-full px-0 lg:px-10 2xl:px-40 lg:rounded-lg h-screen overflow-hidden'>

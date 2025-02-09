@@ -21,7 +21,6 @@ export default function Notifications() {
         const data = res.data;        
         setNotifications(data);
       } catch (error) {
-        console.log(error);
         toast.error('Error Fetching Notifications!');
       }  
     }
@@ -29,7 +28,6 @@ export default function Notifications() {
   }, [])
 
    const handleClick = async (adId) => {
-    console.log(adId);
     try {
       const config = {
         headers: {
@@ -39,7 +37,7 @@ export default function Notifications() {
       };
       const res = await axios.get(`${getAdRoute}/${id}`, config);
     } catch (error) {
-      console.log(error);
+      toast.log(error);
     }
    }
 

@@ -68,7 +68,7 @@ export default function SinglePost() {
             setAd(add);
             setInterested(add.interested.length);    
         } catch (error) {
-            console.error('Error toggling like:', error);
+            toast.error('Error toggling like:', error);
         }
     }
 
@@ -163,7 +163,8 @@ export default function SinglePost() {
                         
                         {ad?.interested?.includes(currentUser?._id) ? (
                                 <button
-                                    className='flex items-center justify-center text-base gap-1 border border-blue-500 px-2 py-1 rounded-lg'
+                                    className={`flex items-center justify-center text-base gap-1 border border-blue-500 px-2 py-1 rounded-lg ${booked ? " cursor-not-allowed opacity-65":""}`}
+                                    disabled = {booked !== undefined}
                                     onClick={handleInterested}
                                 >
                                     <BiSolidStar size={30} className=' text-green-600' />
@@ -187,7 +188,7 @@ export default function SinglePost() {
                             interested ? (<div className=' w-full'>
                                 {interestedUsers.map((user, index) => (
                                     <div key={index} to={"/profile/"+ user._id} 
-                                        className=' flex justify-between px-4 py-2 rounded-lg w-full hover:bg-gray-100 dark:hover:bg-gray-950'
+                                        className=' flex justify-between px-4 py-2 rounded-lg w-full hover:bg-gray-100 dark:hover:bg-gray-950 cursor-pointer'
                                         onClick={() => window.location.href = `/profile/${user._id}`}
                                     >
                                         <div className=' flex items-center'>
@@ -200,7 +201,7 @@ export default function SinglePost() {
                                                 <div>{user.name}</div>
                                             </div>
                                         </div>
-                                        { booked === user._id && (<div className=' flex flex-col items-center justify-center'>
+                                        { booked === user._id && (<div className={` flex flex-col items-center justify-center ${currentUser._id !== ad.userId ? "hidden":""}`}>
                                                 <span>Email: {user.email}</span>
                                                 <span>Phone: {user.phone ? user.phone: 'N/A'}</span>
                                             </div>)

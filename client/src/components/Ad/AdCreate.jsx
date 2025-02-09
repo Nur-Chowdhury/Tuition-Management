@@ -48,10 +48,8 @@ export default function AdCreate() {
                     topics: formData.selectedTopics
                 }   , config
             );
-            console.log(data);
             if(data){
                 toast.success('Ad created successfully!');
-                console.log('Ad created successfully!');
                 setTimeout(() => {
                     window.location.reload();
                 }, 3000);
